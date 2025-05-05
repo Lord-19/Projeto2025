@@ -1,0 +1,79 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+class Program
+{
+    // Função de Busca Binária
+    static int BuscaBinaria(int[] arr, int valor)
+    {
+        int inicio = 0;
+        int fim = arr.Length - 1;
+
+        while (inicio <= fim)
+        {
+            int meio = (inicio + fim) / 2;
+
+            if (arr[meio] == valor)
+                return meio; // Encontrado
+
+            if (arr[meio] < valor)
+                inicio = meio + 1;
+            else
+                fim = meio - 1;
+        }
+
+        return -1; // Não encontrado
+    }
+
+    static void Main()
+    {
+        Console.WriteLine("Digite os números separados por espaço:");
+
+        string entrada = Console.ReadLine();
+        string[] partes = entrada.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        List<int> numerosValidos = new List<int>();
+
+        foreach (string parte in partes)
+        {
+            if (int.TryParse(parte, out int numero) && numero > 1 && numero <= 10000)
+            {
+                numerosValidos.Add(numero);
+            }
+            else
+            {
+                Console.WriteLine($"Valor inválido: '{parte}'. Ignorando.");
+            }
+        }
+
+        if (numerosValidos.Count == 0)
+        {
+            Console.WriteLine("Nenhum número válido foi inserido. Encerrando.");
+            return;
+        }
+
+        int[] array = numerosValidos.ToArray();
+        Array.Sort(array); // Ordena antes da busca binária
+
+        Console.WriteLine("\nArray ordenado:");
+        Console.WriteLine(string.Join(", ", array));
+
+        Console.WriteLine("\nDigite o número que deseja buscar:");
+        string entradaBusca = Console.ReadLine();
+
+        if (int.TryParse(entradaBusca, out int valorBusca) && valorBusca > 1 && valorBusca < 10000)
+        {
+            int resultado = BuscaBinaria(array, valorBusca);
+
+            if (resultado != -1)
+                Console.WriteLine($"Número {valorBusca} encontrado na posição {resultado} .");
+            else
+                Console.WriteLine("Número não encontrado.");
+        }
+        else
+        {
+            Console.WriteLine("Valor de busca inválido. Deve ser entre 1 e 10000.");
+        }
+    }
+}
