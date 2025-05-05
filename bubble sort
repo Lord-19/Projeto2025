@@ -1,0 +1,78 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    // Função Bubble Sort
+    static void BubbleSort(int[] arr)
+    {
+        int n = arr.Length;
+        bool trocou;
+
+        for (int i = 0; i < n - 1; i++)
+        {
+            trocou = false;
+
+            for (int j = 0; j < n - i - 1; j++)
+            {
+                if (arr[j] > arr[j + 1])
+                {
+                    // Troca
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    trocou = true;
+                }
+            }
+
+            if (!trocou)
+                break;
+        }
+    }
+
+    static void Main()
+    {
+        Console.WriteLine("Digite os números que deseja ordenar, separados por espaço:");
+
+        string entrada = Console.ReadLine();
+        string[] partes = entrada.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        // Lista para armazenar somente números válidos
+        var numerosValidos = new System.Collections.Generic.List<int>();
+
+        foreach (string parte in partes)
+        {
+            if (int.TryParse(parte, out int numero))
+            {
+                if (numero >= 1 && numero <= 10000)
+                {
+                    numerosValidos.Add(numero);
+                }
+                else
+                {
+                    Console.WriteLine($"Número fora do intervalo permitido (1 a 10000): {numero} — ignorado.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Entrada inválida: '{parte}' — ignorada.");
+            }
+        }
+
+        if (numerosValidos.Count == 0)
+        {
+            Console.WriteLine("Nenhum número válido foi inserido. Encerrando o programa.");
+            return;
+        }
+
+        int[] numeros = numerosValidos.ToArray();
+
+        Console.WriteLine("\nArray original:");
+        Console.WriteLine(string.Join(", ", numeros));
+
+        BubbleSort(numeros);
+
+        Console.WriteLine("\nArray ordenado com Bubble Sort:");
+        Console.WriteLine(string.Join(", ", numeros));
+    }
+}
